@@ -5,17 +5,16 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
 import { useNavigate } from "react-router-dom";
 
-const PasswordForm = () => {
+const LoginForm = () => {
   const [matricula, setMatricula] = useState("");
   const [senha, setSenha] = useState("");
-  const [confirmarSenha, setConfirmarSenha] = useState("");
   const { toast } = useToast();
   const navigate = useNavigate();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!matricula || !senha || !confirmarSenha) {
+    if (!matricula || !senha) {
       toast({
         title: "Erro",
         description: "Por favor, preencha todos os campos.",
@@ -24,36 +23,34 @@ const PasswordForm = () => {
       return;
     }
     
-    if (senha !== confirmarSenha) {
+    // Mock login validation - in a real app, this would call an API
+    if (matricula === "admin" && senha === "admin") {
+      toast({
+        title: "Sucesso",
+        description: "Login realizado com sucesso!",
+      });
+      
+      // Navigate to dashboard page
+      navigate("/dashboard");
+    } else {
       toast({
         title: "Erro",
-        description: "As senhas não coincidem.",
+        description: "Matrícula ou senha inválidos.",
         variant: "destructive",
       });
-      return;
     }
-    
-    toast({
-      title: "Sucesso",
-      description: "Senha criada com sucesso!",
-    });
-    
-    // Navigate to login page
-    setTimeout(() => {
-      navigate("/");
-    }, 1500);
   };
 
-  const handleCancel = () => {
-    navigate("/");
+  const handleForgotPassword = () => {
+    navigate("/criar-senha");
   };
 
   return (
     <div className="bg-white p-6 rounded shadow-sm max-w-md w-full mx-auto">
       <div className="text-center mb-8">
-        <h2 className="text-granado text-2xl font-medium uppercase mb-4">CRIAR SENHA</h2>
+        <h2 className="text-granado text-2xl font-medium uppercase mb-4">LOGIN</h2>
         <p className="text-gray-800">
-          Digite sua matrícula e crie uma senha para acessar o sistema.
+          Digite sua matrícula e senha para acessar o sistema.
         </p>
       </div>
 
@@ -78,30 +75,22 @@ const PasswordForm = () => {
           />
         </div>
 
-        <div>
-          <Input
-            type="password"
-            placeholder="Confirmar senha"
-            value={confirmarSenha}
-            onChange={(e) => setConfirmarSenha(e.target.value)}
-            className="w-full p-4 border rounded focus:outline-none focus:ring-1 focus:ring-granado"
-          />
+        <div className="text-right">
+          <button 
+            type="button" 
+            onClick={handleForgotPassword}
+            className="text-granado hover:underline text-sm"
+          >
+            Esqueci minha senha
+          </button>
         </div>
 
-        <div className="flex justify-between gap-4 pt-2">
-          <Button
-            type="button"
-            variant="outline"
-            className="w-1/2 border-granado text-granado hover:bg-granado-light hover:text-granado"
-            onClick={handleCancel}
-          >
-            Cancelar
-          </Button>
+        <div className="flex justify-center pt-2">
           <Button
             type="submit"
-            className="w-1/2 bg-granado text-white hover:bg-granado/90"
+            className="w-2/3 bg-granado text-white hover:bg-granado/90"
           >
-            Enviar
+            Entrar
           </Button>
         </div>
       </form>
@@ -109,4 +98,4 @@ const PasswordForm = () => {
   );
 };
 
-export default PasswordForm;
+export default LoginForm;
