@@ -16,7 +16,7 @@ interface HeaderProps {
 const Header = ({ title }: HeaderProps) => {
   const navigate = useNavigate();
   const [isAuthenticated, setIsAuthenticated] = useState(
-    window.location.pathname === "/dashboard"
+    window.location.pathname === "/dashboard" || window.location.pathname === "/perfil"
   );
 
   const handleLogout = () => {
@@ -36,6 +36,9 @@ const Header = ({ title }: HeaderProps) => {
               <>
                 <DropdownMenuItem onClick={() => navigate("/dashboard")}>
                   Dashboard
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => navigate("/perfil")}>
+                  Perfil
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={handleLogout}>
                   <LogOut className="mr-2 h-4 w-4" />
@@ -62,7 +65,10 @@ const Header = ({ title }: HeaderProps) => {
       </div>
       <div className="flex">
         {isAuthenticated ? (
-          <User className="w-6 h-6 text-white" />
+          <User 
+            className="w-6 h-6 text-white cursor-pointer" 
+            onClick={() => navigate("/perfil")}
+          />
         ) : (
           <Share className="w-6 h-6 text-white" />
         )}
